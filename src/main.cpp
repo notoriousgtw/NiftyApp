@@ -1,15 +1,15 @@
-#ifndef _DEBUG
-#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
-#endif
+#define NFT_SHOW_CONSOLE
 
 #include <NiftyAppExample.h>
 #include <iostream>
+
 
 int main()
 {
 	try
 	{
 		NiftyApp app = NiftyApp();
+		app.Init();
 		app.Loop();
 	}
 	catch (const std::runtime_error& e)

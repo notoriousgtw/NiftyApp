@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.24)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /ZI")
 set(BUILD_SHARED_LIBS OFF)
 set(CMAKE_FIND_LIBRARY_SUFFIXES .a ${CMAKE_FIND_LIBRARY_SUFFIXES})
@@ -42,8 +44,15 @@ add_subdirectory(NiftyLib)
 
 include_directories("src/include")
 
+
 file(GLOB SOURCES "src/*.cpp")
 
 add_executable(NiftyApp ${SOURCES})
 
+add_dependencies(NiftyApp ShaderHeaders)
+
 target_link_libraries(NiftyApp PRIVATE NiftyLib lunasvg::lunasvg Vulkan::Vulkan glm::glm glfw )
+
+#target_include_directories(NiftyApp PRIVATE
+#    ${CMAKE_CURRENT_SOURCE_DIR}/NiftyLib/src/generated
+#)
