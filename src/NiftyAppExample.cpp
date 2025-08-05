@@ -1,6 +1,6 @@
 #include "NiftyAppExample.h"
 
-NiftyApp::NiftyApp(): App("nft_app")
+NiftyApp::NiftyApp(): App("NiftyApp")
 {
 	ShowConsole(true);
 }
