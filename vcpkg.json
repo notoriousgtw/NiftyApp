@@ -1,7 +1,6 @@
 {
   "dependencies": [
-    "glm",
-    "vulkan"
+    "glm"
   ],
   "name": "nifty-app",
   "description": "Calculates router offsets to be used when scalloping a guitar neck.",

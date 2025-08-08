@@ -44,7 +44,6 @@ add_subdirectory(NiftyLib)
 
 include_directories("src/include")
 
-
 file(GLOB SOURCES "src/*.cpp")
 
 add_executable(NiftyApp ${SOURCES})
