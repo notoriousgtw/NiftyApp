@@ -1,10 +1,6 @@
 #pragma once
 
-
-#include <NiftyApp.h>
-#include <NiftyScallop.h>
-#include <NiftyCalc.h>
-#include <NiftyNum.h>
+#include <core/NiftyApp.h>
 
 class NiftyApp : public nft::App
 {

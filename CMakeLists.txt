@@ -10,7 +10,6 @@ set(VCPKG_CMAKE_CONFIGURE_OPTIONS -DBUILD_SHARED_LIBS=OFF -DUSE_MSVC_RUNTIME_LIB
 set(DCMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake")
 set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>")
 
- 
 # Static runtime for MSVC
 if(MSVC)
     foreach(flag_var
@@ -20,14 +19,13 @@ if(MSVC)
     endforeach()
 endif()
 
-# Specify the project name
 project(NiftyApp)
 
 include(FetchContent)
 FetchContent_Declare(
     lunasvg
     GIT_REPOSITORY https://github.com/sammycage/lunasvg.git
-    GIT_TAG master  # Specify the desired branch or tag
+    GIT_TAG master
 )
 FetchContent_MakeAvailable(lunasvg)
 
@@ -43,18 +41,14 @@ find_package(Vulkan REQUIRED)
 
 add_subdirectory(NiftyLib)
 
+# Public headers of the app now in src/include (restructured)
 include_directories("src/include")
 
-
-file(GLOB SOURCES "src/*.cpp")
+# Recurse cpp sources under src
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.cpp")
 
 add_executable(NiftyApp ${SOURCES})
 
 add_dependencies(NiftyApp ShaderHeaders)
 
 target_link_libraries(NiftyApp PRIVATE NiftyLib lunasvg::lunasvg Vulkan::Vulkan glm::glm glfw)
-#target_link_libraries(NiftyApp PRIVATE NiftyLib)
-
-#target_include_directories(NiftyApp PRIVATE
-#    ${CMAKE_CURRENT_SOURCE_DIR}/NiftyLib/src/generated
-#)
