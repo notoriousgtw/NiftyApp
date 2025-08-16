@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/NiftyApp.h>
+#include <core/app.h>
 
 class NiftyApp : public nft::App
 {
