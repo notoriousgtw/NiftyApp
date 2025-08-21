@@ -10,6 +10,13 @@ set(VCPKG_CMAKE_CONFIGURE_OPTIONS -DBUILD_SHARED_LIBS=OFF -DUSE_MSVC_RUNTIME_LIB
 set(DCMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake")
 set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>")
 
+file(
+  COPY
+  "${CMAKE_CURRENT_SOURCE_DIR}/NiftyLib/assets"
+  DESTINATION
+  "${CMAKE_CURRENT_BINARY_DIR}"
+)
+
 # Static runtime for MSVC
 if(MSVC)
     foreach(flag_var
