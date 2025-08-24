@@ -16,6 +16,11 @@ void NiftyApp::Update()
 	// This demonstrates the material system is working
 }
 
+void NiftyApp::PreInit()
+{
+	ShowConsole(true);
+}
+
 void NiftyApp::PostInit()
 {
 	// Example of how you could add more objects with different materials
