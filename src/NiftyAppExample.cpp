@@ -3,10 +3,15 @@
 NiftyApp::NiftyApp(): App("NiftyApp")
 {
 	ShowConsole(true);
+	world	 = std::make_unique<nft::ecs::World>();
+	scene	 = std::make_unique<nft::graphics::Scene>(world.get());
+	renderer = std::make_unique<nft::graphics::Renderer>();
 }
 
 NiftyApp::~NiftyApp()
 {
+	// Explicit destructor to ensure proper cleanup of unique_ptr with forward declared types
+	// The destructors of world, scene, and renderer will be called automatically
 }
 
 void NiftyApp::Update()
@@ -14,37 +19,47 @@ void NiftyApp::Update()
 	// Example of how to modify materials at runtime
 	// You could access the scene through the renderer if needed
 	// This demonstrates the material system is working
+
+	// Update the renderer
+	renderer->DrawFrame();
 }
 
-void NiftyApp::PreInit()
-{
-	ShowConsole(true);
-}
+void NiftyApp::PreInit() { ShowConsole(true); }
 
 void NiftyApp::PostInit()
 {
-	// Example of how you could add more objects with different materials
-	// if you had access to the scene:
-	
-	// Get the scene (you'd need to implement access to it)
+	renderer->Init(scene.get(), main_window->GetSurface());
+	auto pipeline = renderer->AddPipeline();
 
-	// auto* scene = GetRenderer()->GetSurface()->GetScene();
-	
-	// Create a material with different properties
-	// nft::vulkan::Material metal_material = {
-	//     glm::vec3(0.02f, 0.02f, 0.02f),  // ambient - very dark
-	//     glm::vec3(0.3f, 0.3f, 0.3f),     // diffuse - dark gray
-	//     glm::vec3(0.95f, 0.95f, 0.95f),  // specular - very shiny
-	//     256.0f,                          // specular_highlights - mirror-like
-	//     nullptr, nullptr, nullptr
-	// };
-	// scene->AddMaterial(metal_material);
-	
-	// Create another object with this material
-	// nft::vulkan::ObjectData metal_object;
-	// metal_object.mesh = some_mesh;
-	// metal_object.transform = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f, 0.0f, 0.0f));
-	// metal_object.texture_index = 0;
-	// metal_object.material_index = 2; // Use the metal material we just added
-	// scene->AddObject(metal_object);
+	// Create some entities to render
+	CreateTestEntities();
+
+	renderer->CreatePipelines();
+}
+
+void NiftyApp::CreateTestEntities()
+{
+	// FOR DEBUGGING: Create only ONE entity first to test
+	auto triangle_entity = scene->CreateTriangleEntity(
+		glm::vec3(0.0f, 0.0f, 0.0f),  // position at center
+		glm::vec3(1.0f, 1.0f, 1.0f),  // normal scale
+		glm::vec3(0.0f, 0.0f, 0.0f)   // no rotation
+	);
+
+	// Comment out other entities for now
+	/*
+	// Create a quad entity to the right - make it bigger and further apart
+	auto quad_entity = scene->CreateQuadEntity(
+		glm::vec3(3.0f, 0.0f, 0.0f),  // position - move further right
+		glm::vec3(1.5f, 1.5f, 1.0f),  // scale - make it bigger
+		glm::vec3(0.0f, 0.0f, 45.0f)  // rotation (45 degrees around Z axis)
+	);
+
+	// Create another triangle to the left - make it bigger and further apart
+	auto triangle2_entity = scene->CreateTriangleEntity(
+		glm::vec3(-3.0f, 0.0f, 0.0f), // position - move further left
+		glm::vec3(1.5f, 1.5f, 1.0f),  // scale - make it bigger
+		glm::vec3(0.0f, 0.0f, 180.0f) // rotation (180 degrees around Z axis)
+	);
+	*/
 }
