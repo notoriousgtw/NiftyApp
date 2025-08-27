@@ -27,6 +27,7 @@ void NiftyApp::PostInit()
 	// if you had access to the scene:
 	
 	// Get the scene (you'd need to implement access to it)
+
 	// auto* scene = GetRenderer()->GetSurface()->GetScene();
 	
 	// Create a material with different properties
