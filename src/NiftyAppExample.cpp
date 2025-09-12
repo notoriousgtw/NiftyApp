@@ -10,8 +10,27 @@ NiftyApp::NiftyApp(): App("NiftyApp")
 
 NiftyApp::~NiftyApp()
 {
+	// CRITICAL FIX: Safely clean up renderer resources before destruction
+	if (renderer)
+	{
+		// Wait for GPU to be idle before freeing resources
+		try {
+			auto surface = main_window ? main_window->GetSurface() : nullptr;
+			if (surface && surface->GetDevice()) {
+				surface->GetDevice()->GetDevice().waitIdle();
+				GetLogger()->Debug("GPU idle completed before safe resource cleanup", "VKShutdown");
+			}
+			
+			// Now safely free the resources
+			renderer->SafeCleanupResources();
+			GetLogger()->Debug("Renderer resources safely cleaned up", "VKShutdown");
+		} catch (const std::exception& e) {
+			GetLogger()->Warn(std::format("Failed to safely cleanup renderer resources: {}", e.what()), "VKShutdown");
+		}
+	}
+	
 	// Explicit destructor to ensure proper cleanup of unique_ptr with forward declared types
-	// The destructors of world, scene, and renderer will be called automatically
+	// The destructors of world, scene, and renderer will be called automatically after this point
 }
 
 void NiftyApp::Update()
